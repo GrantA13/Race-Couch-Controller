@@ -58,7 +58,6 @@ void setup() {
 }
 void loop() {
   Usb.Task();
-  analogWrite(5, 255);
   if (PS4.connected()) {
 
     if (PS4.getAnalogButton(R2)) {
@@ -76,21 +75,21 @@ void loop() {
       digitalWrite(5, LOW);
       digitalWrite(3, LOW);
       if (anglePercent < 1){
-        leftOut = PS4.getAnalogButton(R2);
-        rightOut = PS4.getAnalogButton(R2) * anglePercent;
+        leftOut = out;
+        rightOut = out * anglePercent;
       }else if(anglePercent > 1){
-        rightOut = PS4.getAnalogButton(R2);
-        leftOut = PS4.getAnalogButton(R2) * (1-(anglePercent-1));
+        rightOut = out;
+        leftOut = out * (1-(anglePercent-1));
       }
     }else if (angle < 0){
       digitalWrite(5, HIGH);
       digitalWrite(3, HIGH);
       if (anglePercent < 1){
-        leftOut = PS4.getAnalogButton(R2);
-        rightOut = PS4.getAnalogButton(R2) * anglePercent;
+        leftOut = out;
+        rightOut = out * anglePercent;
       }else if(anglePercent > 1){
-        rightOut = PS4.getAnalogButton(R2);
-        leftOut = PS4.getAnalogButton(R2) * (1-(anglePercent-1));
+        rightOut = out;
+        leftOut = out * (1-(anglePercent-1));
       }
     }
 
@@ -118,9 +117,21 @@ void loop() {
       Serial.print(F("\tReversing: "));
       Serial.print(digitalRead(4));
     }
+    if(leftOut = 0){
+      digitalWrite(8, LOW)
+    }else if(leftOut = 255){
+      digitalWrite(8, HIGH)
+    }else{
+      analogWrite(8, leftOut);
+    }
     
-    analogWrite(8, leftOut);
-    analogWrite(10, rightOut);
+    if(rightOut = 0){
+      digitalWrite(10, LOW)
+    }else if(rightOut = 255){
+      digitalWrite(10, HIGH)
+    }else{
+      analogWrite(10, rightOut);
+    }
     // val = digitalRead(input);
     // Serial.println(val);
     // delay(val);
