@@ -49,9 +49,10 @@ void setup() {
     while (1); // Halt
   }
   Serial.print(F("\r\nPS4 Bluetooth Library Started"));
-  pinMode(6, OUTPUT);
+  pinMode(10, OUTPUT);
+  pinMode(8, OUTPUT);
   pinMode(5, OUTPUT);
-  pinMode(4, OUTPUT);
+  pinMode(3, OUTPUT);
   pinMode(9, INPUT);
   
 }
@@ -72,7 +73,8 @@ void loop() {
     anglePercent = abs(angle / (M_PI/2));
     
     if (angle > 0){
-      digitalWrite(4, LOW);
+      digitalWrite(5, LOW);
+      digitalWrite(3, LOW);
       if (anglePercent < 1){
         leftOut = PS4.getAnalogButton(R2);
         rightOut = PS4.getAnalogButton(R2) * anglePercent;
@@ -81,7 +83,8 @@ void loop() {
         leftOut = PS4.getAnalogButton(R2) * (1-(anglePercent-1));
       }
     }else if (angle < 0){
-      digitalWrite(4, HIGH);
+      digitalWrite(5, HIGH);
+      digitalWrite(3, HIGH);
       if (anglePercent < 1){
         leftOut = PS4.getAnalogButton(R2);
         rightOut = PS4.getAnalogButton(R2) * anglePercent;
@@ -116,9 +119,8 @@ void loop() {
       Serial.print(digitalRead(4));
     }
     
-    analogWrite(4, out);
-    analogWrite(5, leftOut);
-    analogWrite(6, rightOut);
+    analogWrite(8, leftOut);
+    analogWrite(10, rightOut);
     // val = digitalRead(input);
     // Serial.println(val);
     // delay(val);
