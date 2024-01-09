@@ -38,6 +38,7 @@ double leftOut;
 double out;
 int input = 9;
 int val = 0;
+bool buttonPressed = false;
 
 void setup() {
   Serial.begin(115200);
@@ -51,15 +52,16 @@ void setup() {
   Serial.print(F("\r\nPS4 Bluetooth Library Started"));
   pinMode(3, OUTPUT);
   pinMode(5, OUTPUT);
-  // pinMode(1, OUTPUT);
-  // pinMode(2, OUTPUT);
+  pinMode(13, OUTPUT);
+  pinMode(11, OUTPUT);
   pinMode(9, INPUT);
   
 }
 void loop() {
   Usb.Task();
+  digitalWrite(13, LOW);
+  digitalWrite(11, LOW);
   if (PS4.connected()) {
-
     if (PS4.getAnalogButton(R2)) {
       out = PS4.getAnalogButton(R2);
     }else{
@@ -72,8 +74,6 @@ void loop() {
     anglePercent = abs(angle / (M_PI/2));
     
     if (angle > 0){
-      // digitalWrite(5, LOW);
-      // digitalWrite(3, LOW);
       if (anglePercent < 1){
         leftOut = out;
         rightOut = out * anglePercent;
@@ -82,8 +82,6 @@ void loop() {
         leftOut = out * (1-(anglePercent-1));
       }
     }else if (angle < 0){
-      // digitalWrite(5, HIGH);
-      // digitalWrite(3, HIGH);
       if (anglePercent < 1){
         leftOut = out;
         rightOut = out * anglePercent;
@@ -92,6 +90,11 @@ void loop() {
         leftOut = out * (1-(anglePercent-1));
       }
     }
+    // if (PS4.getButtonClick(CROSS)) {
+    //   buttonPressed = !buttonPressed;
+    //   digitalWrite(13, HIGH);
+    //   digitalWrite(11, HIGH);
+    // }
 
     // }else if(anglePercent > ){
 
@@ -115,7 +118,7 @@ void loop() {
       Serial.print(F("\tRight Out: "));
       Serial.print(rightOut);
       Serial.print(F("\tReversing: "));
-      Serial.print(digitalRead(4));
+      Serial.print(digitalRead(13));
     }
     if(leftOut == 0){
       digitalWrite(5, LOW);
