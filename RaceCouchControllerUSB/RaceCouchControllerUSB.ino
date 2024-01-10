@@ -58,28 +58,6 @@ void loop() {
       out = 0;
     }  
 
-    x = PS4.getAnalogHat(LeftHatX) - 128;
-    y = 126 - PS4.getAnalogHat(LeftHatY);
-    angle = atan2(y, x);
-    anglePercent = abs(angle / (M_PI/2));
-    
-    if (angle > 0){
-      if (anglePercent < 1){
-        leftOut = out;
-        rightOut = out * anglePercent;
-      }else if(anglePercent > 1){
-        rightOut = out;
-        leftOut = out * (1-(anglePercent-1));
-      }
-    }else if (angle < 0){
-      if (anglePercent < 1){
-        leftOut = out;
-        rightOut = out * anglePercent;
-      }else if(anglePercent > 1){
-        rightOut = out;
-        leftOut = out * (1-(anglePercent-1));
-      }
-    }
     // if (PS4.getButtonClick(CROSS)) {
     //   buttonPressed = !buttonPressed;
     //   digitalWrite(13, HIGH);
@@ -94,7 +72,30 @@ void loop() {
       Serial.print(F("\r\nPS"));
     }
 
-    if (PS4.getAnalogHat(LeftHatX) > 137 || PS4.getAnalogHat(LeftHatX) < 117 || PS4.getAnalogHat(LeftHatY) > 137 || PS4.getAnalogHat(LeftHatY) < 117 || PS4.getAnalogHat(RightHatX) > 137 || PS4.getAnalogHat(RightHatX) < 117 || PS4.getAnalogHat(RightHatY) > 137 || PS4.getAnalogHat(RightHatY) < 117) {
+    if (PS4.getAnalogHat(LeftHatX) > 137 || PS4.getAnalogHat(LeftHatX) < 117 || PS4.getAnalogHat(LeftHatY) > 137 || PS4.getAnalogHat(LeftHatY) < 117{
+      x = PS4.getAnalogHat(LeftHatX) - 128;
+      y = 126 - PS4.getAnalogHat(LeftHatY);
+      angle = atan2(y, x);
+      anglePercent = abs(angle / (M_PI/2));
+    
+      if (angle > 0){
+        if (anglePercent < 1){
+          leftOut = out;
+          rightOut = out * anglePercent;
+        }else if(anglePercent > 1){
+          rightOut = out;
+          leftOut = out * (1-(anglePercent-1));
+        }
+      }else if (angle < 0){
+        if (anglePercent < 1){
+          leftOut = out;
+          rightOut = out * anglePercent;
+        }else if(anglePercent > 1){
+          rightOut = out;
+          leftOut = out * (1-(anglePercent-1));
+        }
+      }
+
       Serial.print(F("\r\nLeftHatX: "));
       Serial.print(PS4.getAnalogHat(LeftHatX));
       Serial.print(F("\tLeftHatY: "));
@@ -110,6 +111,22 @@ void loop() {
       Serial.print(F("\tReversing: "));
       Serial.print(digitalRead(13));
     }
+
+    if (PS4.getAnalogHat(RightHatX) > 137 || PS4.getAnalogHat(RightHatX) < 117 {
+      x = PS4.getAnalogHat(RightHatX);
+      if(x <= 117){
+        x = abs(x-117);
+        rightOut = out * (x / 117);
+        leftOut = out * (x / 117);
+        digitalWrite(13, HIGH);
+      }else if(x >= 137){
+        x = abs(x-128);
+        rightOut = out * (x / 128);
+        leftOut = out * (x / 128);
+        digitalWrite(11, HIGH);
+      }
+    }
+
     if(leftOut == 0){
       digitalWrite(5, LOW);
     }else if(leftOut == 255){
